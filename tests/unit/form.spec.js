@@ -13,8 +13,8 @@ describe('Form', () => {
 
   it('should show "Welcome {name} {surname}"', async () => {
     const wrapper = shallowMount(Form);
-    wrapper.find('.form_label_name').setValue('thiago');
-    wrapper.find('.form_label_lastname').setValue('brasil');
+    wrapper.find('.form_input_name').setValue('thiago');
+    wrapper.find('.form_input_lastname').setValue('brasil');
 
     await wrapper.vm.$forceUpdate();
 
@@ -100,7 +100,9 @@ describe('Form', () => {
         });
 
         expect(wrapper.find('.form_h2_welcome_message').text()).toBe('Welcome thiago brasil');
-        expect(wrapper.find('.form_h2_welcome_message').exists()).toBe(true);
+        expect(wrapper.find('.form_h2_welcome_message').attributes('style')).not.toBe(
+          'display: none;',
+        );
       });
     });
 
@@ -110,27 +112,27 @@ describe('Form', () => {
           data: () => ({ name: 'edimo', lastName: '' }),
         });
 
-        expect(wrapper.find('.form_h2_welcome_message').exists()).toBe(false);
+        expect(wrapper.find('.form_h2_welcome_message').attributes('style')).toBe('display: none;');
       });
     });
   });
   describe('Address', () => {
     describe('When name and lastname are filled', () => {
-      const wrapper = shallowMount(Form, {
-        computed: { isFormCompleted: () => true },
-      });
       it('should has Address label', () => {
+        const wrapper = shallowMount(Form, {
+          computed: { isFormCompleted: () => true },
+        });
         expect(wrapper.find('.form_h1_address').text()).toBe('Address');
-        expect(wrapper.find('.form_h1_address').exists()).toBe(true);
+        expect(wrapper.find('.form_h1_address').attributes('style')).not.toBe('display: none;');
       });
     });
 
     describe('When name and lastname are NOT filled', () => {
-      const wrapper = shallowMount(Form, {
-        computed: { isFormCompleted: () => false },
-      });
       it('should NOT has Address label', () => {
-        expect(wrapper.find('.form_h1_address').exists()).toBe(false);
+        const wrapper = shallowMount(Form, {
+          computed: { isFormCompleted: () => false },
+        });
+        expect(wrapper.find('.form_h1_address').attributes('style')).toBe('display: none;');
       });
     });
 
